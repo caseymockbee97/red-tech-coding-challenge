@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { AccountCircle, Settings } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
 export const NavBar = () => {
   return (
