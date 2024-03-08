@@ -13,7 +13,7 @@ export const getOrders = async () => {
 // TODO: Update with Type
 export const getOrdersByType = async (orderType: OrderType) => {
   const response = fetch(
-    `${import.meta.env.VITE_API_ENDPOINT}/Orders/${orderType}`,
+    `${import.meta.env.VITE_API_ENDPOINT}/Orders/ByType?orderType=${orderType}`,
     {
       method: 'GET',
       headers: {
