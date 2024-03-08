@@ -1,11 +1,21 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useGetOrders } from './useGetOrders';
+// import { Checkbox } from '@mui/material';
+import { OrderType } from '../../Types';
+import React from 'react';
 
 interface DataTableProps {
   searchId: string;
+  selectedIds: string[];
+  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedOrderType: OrderType | '';
 }
-
-export const DataTable = ({ searchId }: DataTableProps) => {
+export const DataTable = ({
+  searchId,
+  selectedIds,
+  setSelectedIds,
+  selectedOrderType,
+}: DataTableProps) => {
   const columns: GridColDef[] = [
     {
       ...UNIVERSAL_COL_DEF,
@@ -26,7 +36,7 @@ export const DataTable = ({ searchId }: DataTableProps) => {
     {
       ...UNIVERSAL_COL_DEF,
       field: 'createdDate',
-      headerName: 'Created Date',
+      headerName: 'Creation Date',
       minWidth: 250,
     },
     {
@@ -36,7 +46,7 @@ export const DataTable = ({ searchId }: DataTableProps) => {
     },
   ];
 
-  const { loading, orders } = useGetOrders({ searchId });
+  const { loading, orders } = useGetOrders({ searchId, selectedOrderType });
 
   return (
     <DataGrid
@@ -48,6 +58,11 @@ export const DataTable = ({ searchId }: DataTableProps) => {
       disableColumnMenu
       hideFooter
       loading={loading}
+      rowSelectionModel={selectedIds}
+      // GridRowSelectionModel is (string | number)[] but we know all of our ids are strings.
+      onRowSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
+      // TODO: Fix ref forwarding
+      // slots={{ baseCheckbox: (props) => <Checkbox {...props} color="error" /> }}
     />
   );
 };
