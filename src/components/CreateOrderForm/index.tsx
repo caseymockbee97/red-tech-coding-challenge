@@ -1,42 +1,46 @@
+import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Snackbar, TextField } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { Order } from '../../Types';
-import { addOrder } from '../../dataServices';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { CreateOrder } from '../../Types';
+import { addOrder } from '../../dataServices';
 import { OrderSelect } from './OrderSelect';
+import { orderStore } from './orderStore';
 
 export const CreateOrderForm = () => {
   const navigate = useNavigate();
 
   const [toastMessage, setToastMessage] = useState('');
+  const { order, setOrder, reset } = orderStore();
 
-  const { handleSubmit, register, control } = useForm<
-    Omit<Order, 'createdDate' | 'orderId'>
-  >({
-    values: {
-      createdByUserName: '',
-      customerName: '',
-      orderType: 'Standard',
-    },
+  const { handleSubmit, register, control, getValues } = useForm<CreateOrder>({
+    defaultValues: order,
   });
 
-  const onSubmit: SubmitHandler<Omit<Order, 'createdDate' | 'orderId'>> =
-    useCallback(
-      async (data) => {
-        if (!data.orderType) {
-          return;
-        }
-        const response = await addOrder(data);
-        if (response.ok) {
-          navigate('/');
-        } else {
-          setToastMessage(`${response.status}: An error occurred`);
-        }
-      },
-      [navigate]
-    );
+  const onSubmit: SubmitHandler<CreateOrder> = useCallback(
+    async (data) => {
+      const response = await addOrder(data);
+      if (response.ok) {
+        reset();
+        navigate('/');
+      } else {
+        setToastMessage(`${response.status}: An error occurred`);
+      }
+    },
+    [navigate, reset]
+  );
+
+  const handleSaveDraft = useCallback(() => {
+    const order = getValues();
+    setOrder(order);
+    navigate('/');
+  }, [getValues, navigate, setOrder]);
+
+  const handleCancel = useCallback(() => {
+    reset();
+    navigate('/');
+  }, [navigate, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,8 +63,17 @@ export const CreateOrderForm = () => {
           required
         />
 
-        <Button fullWidth variant="contained" color="error" href="/">
+        <Button
+          fullWidth
+          variant="contained"
+          color="error"
+          onClick={handleCancel}
+        >
           Discard
+        </Button>
+
+        <Button fullWidth variant="contained" onClick={handleSaveDraft}>
+          Save Draft
         </Button>
 
         <Button fullWidth variant="contained" color="success" type="submit">

@@ -1,10 +1,9 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { Order } from '../../Types';
+import { CreateOrder } from '../../Types';
 import { Control, Controller } from 'react-hook-form';
 
 interface OrderSelectProps {
-  //   register: UseFormRegister<Omit<Order, 'orderId' | 'createdDate'>>;
-  control: Control<Omit<Order, 'createdDate' | 'orderId'>, unknown>;
+  control: Control<CreateOrder>;
 }
 
 export const OrderSelect = ({ control }: OrderSelectProps) => {
