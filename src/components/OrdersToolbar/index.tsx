@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { Button, ButtonGroup, TextField } from '@mui/material';
 import { Add, Delete, Search } from '@mui/icons-material';
 import { OrderType } from '../../Types';
 import { OrderSelect } from './OrderSelect';
@@ -21,19 +21,17 @@ export const OrdersToolbar = ({
 }: OrdersToolbarProps) => {
   return (
     <Toolbar>
-      <SearchField
-        onChange={(e) => setSearchId(e.target.value)}
-        size="small"
-        variant="outlined"
-        placeholder="Customer Search"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Search />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <ButtonGroup>
+        <SearchField
+          onChange={(e) => setSearchId(e.target.value)}
+          size="small"
+          variant="outlined"
+          placeholder="Customer Search"
+        />
+        <Button variant="contained">
+          <Search />
+        </Button>
+      </ButtonGroup>
       <Button
         variant="contained"
         size="small"
