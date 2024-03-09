@@ -15,9 +15,6 @@ const INITIAL_STATE: CreateOrder = {
 
 export const orderStore = create<OrderStore>()((set) => ({
   order: INITIAL_STATE,
-  setOrder: (order) => {
-    console.log(order);
-    set({ order });
-  },
+  setOrder: (order) => set({ order }),
   reset: () => set({ order: { ...INITIAL_STATE } }),
 }));

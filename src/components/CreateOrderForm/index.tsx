@@ -12,6 +12,7 @@ export const CreateOrderForm = () => {
   const navigate = useNavigate();
 
   const [toastMessage, setToastMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const { order, setOrder, reset } = orderStore();
 
   const { handleSubmit, register, control, getValues } = useForm<CreateOrder>({
@@ -20,6 +21,7 @@ export const CreateOrderForm = () => {
 
   const onSubmit: SubmitHandler<CreateOrder> = useCallback(
     async (data) => {
+      setLoading(true);
       const response = await addOrder(data);
       if (response.ok) {
         reset();
@@ -27,14 +29,17 @@ export const CreateOrderForm = () => {
       } else {
         setToastMessage(`${response.status}: An error occurred`);
       }
+      setLoading(false);
     },
     [navigate, reset]
   );
 
   const handleSaveDraft = useCallback(() => {
+    setLoading(true);
     const order = getValues();
     setOrder(order);
     navigate('/');
+    setLoading(false);
   }, [getValues, navigate, setOrder]);
 
   const handleCancel = useCallback(() => {
@@ -68,15 +73,27 @@ export const CreateOrderForm = () => {
           variant="contained"
           color="error"
           onClick={handleCancel}
+          disabled={loading}
         >
           Discard
         </Button>
 
-        <Button fullWidth variant="contained" onClick={handleSaveDraft}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={handleSaveDraft}
+          disabled={loading}
+        >
           Save Draft
         </Button>
 
-        <Button fullWidth variant="contained" color="success" type="submit">
+        <Button
+          fullWidth
+          variant="contained"
+          color="success"
+          type="submit"
+          disabled={loading}
+        >
           Submit
         </Button>
       </ButtonContainer>
