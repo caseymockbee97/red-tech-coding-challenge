@@ -11,8 +11,16 @@ export const CreateOrderForm = () => {
   const navigate = useNavigate();
 
   const [toastMessage, setToastMessage] = useState('');
-  const { handleSubmit, register } =
-    useForm<Omit<Order, 'createdDate' | 'orderId'>>();
+
+  const { handleSubmit, register, control } = useForm<
+    Omit<Order, 'createdDate' | 'orderId'>
+  >({
+    values: {
+      createdByUserName: '',
+      customerName: '',
+      orderType: 'Standard',
+    },
+  });
 
   const onSubmit: SubmitHandler<Omit<Order, 'createdDate' | 'orderId'>> =
     useCallback(
@@ -33,7 +41,7 @@ export const CreateOrderForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ButtonContainer>
-        <OrderSelect register={register} />
+        <OrderSelect control={control} />
 
         <TextField
           {...register('customerName')}
