@@ -3,6 +3,7 @@ import { Button, ButtonGroup, TextField } from '@mui/material';
 import { Add, Delete, Search } from '@mui/icons-material';
 import { OrderType } from '../../Types';
 import { OrderSelect } from './OrderSelect';
+import { useNavigate } from 'react-router-dom';
 
 interface OrdersToolbarProps {
   handleDeleteOrders: () => Promise<void>;
@@ -19,6 +20,8 @@ export const OrdersToolbar = ({
   selectedOrderType,
   setSelectedOrderType,
 }: OrdersToolbarProps) => {
+  const navigate = useNavigate();
+
   return (
     <Toolbar>
       <ButtonGroup>
@@ -35,7 +38,7 @@ export const OrdersToolbar = ({
       <Button
         variant="contained"
         size="small"
-        href="/createOrder"
+        onClick={() => navigate('/createOrder')}
         sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}
       >
         <Add fontSize="small" /> Create Order
