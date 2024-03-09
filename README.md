@@ -11,3 +11,7 @@
 4. Run `npm run dev`
 
 5. navigate to http://localhost:5173/ in your browser.
+
+## View Live
+
+[Live Link](https://red-tech-coding-challenge.netlify.app/)
