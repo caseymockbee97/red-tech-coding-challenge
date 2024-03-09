@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { NavBar } from '../components';
+import { NavBar } from '../../components';
 import { Toolbar } from '@mui/material';
 
 interface MainLayoutProps {

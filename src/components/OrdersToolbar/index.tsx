@@ -26,7 +26,7 @@ export const OrdersToolbar = ({
           onChange={(e) => setSearchId(e.target.value)}
           size="small"
           variant="outlined"
-          placeholder="Customer Search"
+          label="Customer Search"
         />
         <Button variant="contained">
           <Search />
@@ -35,7 +35,7 @@ export const OrdersToolbar = ({
       <Button
         variant="contained"
         size="small"
-        href="/addOrder"
+        href="/createOrder"
         sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}
       >
         <Add fontSize="small" /> Create Order
@@ -63,5 +63,6 @@ const SearchField = styled(TextField)`
 
 const Toolbar = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 `;

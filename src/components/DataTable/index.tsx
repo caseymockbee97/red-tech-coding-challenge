@@ -1,9 +1,8 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-// import { Checkbox } from '@mui/material';
-import { Order } from '../../Types';
 import React from 'react';
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Order } from '../../Types';
 
 interface DataTableProps {
   selectedIds: string[];
@@ -58,6 +57,7 @@ export const DataTable = ({
       hideFooter
       loading={loading}
       rowSelectionModel={selectedIds}
+      autoHeight
       // GridRowSelectionModel is (string | number)[] but we know all of our ids are strings.
       onRowSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
     />

@@ -25,7 +25,9 @@ export const getOrdersByType = async (orderType: OrderType) => {
 };
 
 // TODO: Update with Type
-export const addOrder = async (order: Order) => {
+export const addOrder = async (
+  order: Omit<Order, 'createdDate' | 'orderId'>
+) => {
   const response = fetch(`${import.meta.env.VITE_API_ENDPOINT}/Orders`, {
     method: 'POST',
     headers: {

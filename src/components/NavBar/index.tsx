@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { AccountCircle, Settings } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import logo from '../../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 export const NavBar = () => {
   return (
@@ -9,7 +10,9 @@ export const NavBar = () => {
       <Toolbar>
         <InnerContainer $gap="12px">
           <Image src={logo} />
-          <Typography variant="h5">Home</Typography>
+          <Typography variant="h5">
+            <UnstyledLink to="/">Home</UnstyledLink>
+          </Typography>
         </InnerContainer>
         <Box sx={{ flexGrow: 1 }} />
         <InnerContainer $gap="0px">
@@ -34,4 +37,9 @@ const InnerContainer = styled.div<{ $gap: string }>`
 
 const Image = styled.img`
   height: 2.5rem;
+`;
+
+const UnstyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
 `;
