@@ -26,7 +26,7 @@ export const getOrdersByType = async (orderType: OrderType) => {
 
 // TODO: Update with Type
 export const addOrder = async (order: Order) => {
-  const response = fetch(`${import.meta.env.VITE_API_ENDPOINT}`, {
+  const response = fetch(`${import.meta.env.VITE_API_ENDPOINT}/Orders`, {
     method: 'POST',
     headers: {
       ApiKey: import.meta.env.VITE_API_KEY,
@@ -38,8 +38,8 @@ export const addOrder = async (order: Order) => {
 };
 
 export const deleteOrders = async (orders: string[]) => {
-  const response = fetch(`${import.meta.env.VITE_API_ENDPOINT}`, {
-    method: 'GET',
+  const response = fetch(`${import.meta.env.VITE_API_ENDPOINT}/Orders/Delete`, {
+    method: 'POST',
     headers: {
       ApiKey: import.meta.env.VITE_API_KEY,
       'Content-Type': 'application/json',

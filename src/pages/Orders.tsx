@@ -1,76 +1,56 @@
 import styled from '@emotion/styled';
 import { DataTable } from '../components';
-import {
-  Button,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
-import { Add, Delete, Search } from '@mui/icons-material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { OrderType } from '../Types';
+import { OrdersToolbar } from '../components/OrdersToolbar';
+import { useGetOrders } from '../components/DataTable/useGetOrders';
+import { deleteOrders } from '../dataServices';
+import { Snackbar } from '@mui/material';
 
 export const OrdersPage = () => {
+  const [toastMessage, setToastMessage] = useState('');
   const [searchId, setSearchId] = useState('');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedOrderType, setSelectedOrderType] = useState<OrderType | ''>(
     ''
   );
 
+  const { loading, orders, handleFetchOrders } = useGetOrders({
+    searchId,
+    selectedOrderType,
+  });
+
+  const handleDeleteOrders = useCallback(async () => {
+    const response = await deleteOrders(selectedIds);
+    if (response.ok) {
+      handleFetchOrders();
+      setSelectedIds([]);
+      setToastMessage('Orders Deleted');
+    } else {
+      setToastMessage('An error occurred deleting orders.');
+    }
+  }, [handleFetchOrders, selectedIds]);
+
   return (
     <Container>
-      <Toolbar>
-        <SearchField
-          onChange={(e) => setSearchId(e.target.value)}
-          size="small"
-          variant="outlined"
-          placeholder="Customer Search"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Button variant="contained" size="small">
-          <Add fontSize="small" /> Create Order
-        </Button>
-        <Button variant="contained" size="small" disabled={!selectedIds.length}>
-          <Delete fontSize="small" /> Delete Selected
-        </Button>
-        <FormControl size="small">
-          <InputLabel id="order-type-select-label">Order Type</InputLabel>
-          <Select
-            sx={{ width: '300px' }}
-            value={selectedOrderType}
-            onChange={(e) =>
-              setSelectedOrderType(e.target.value as OrderType | '')
-            }
-            label-id="order-type-select-label"
-            id="order-type-select"
-            size="small"
-            label="Order Type"
-          >
-            <MenuItem value="">
-              <em>Any</em>
-            </MenuItem>
-            <MenuItem value="Standard">Standard</MenuItem>
-            <MenuItem value="SaleOrder">SaleOrder</MenuItem>
-            <MenuItem value="PurchaseOrder">PurchaseOrder</MenuItem>
-            <MenuItem value="TransferOrder">TransferOrder</MenuItem>
-            <MenuItem value="ReturnOrder">ReturnOrder</MenuItem>
-          </Select>
-        </FormControl>
-      </Toolbar>
+      <OrdersToolbar
+        handleDeleteOrders={handleDeleteOrders}
+        setSearchId={setSearchId}
+        selectedIds={selectedIds}
+        selectedOrderType={selectedOrderType}
+        setSelectedOrderType={setSelectedOrderType}
+      />
       <DataTable
-        searchId={searchId}
         selectedIds={selectedIds}
         setSelectedIds={setSelectedIds}
-        selectedOrderType={selectedOrderType}
+        loading={loading}
+        orders={orders}
+      />
+      <Snackbar
+        open={!!toastMessage}
+        autoHideDuration={2000}
+        onClose={() => setToastMessage('')}
+        message={toastMessage}
       />
     </Container>
   );
@@ -81,14 +61,4 @@ const Container = styled.div`
   flex-direction: column;
   gap: 12px;
   padding: 12px;
-`;
-
-const SearchField = styled(TextField)`
-  width: 300px;
-`;
-
-const Toolbar = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
 `;

@@ -1,20 +1,21 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useGetOrders } from './useGetOrders';
 // import { Checkbox } from '@mui/material';
-import { OrderType } from '../../Types';
+import { Order } from '../../Types';
 import React from 'react';
+import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 
 interface DataTableProps {
-  searchId: string;
   selectedIds: string[];
   setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedOrderType: OrderType | '';
+  loading: boolean;
+  orders: Order[];
 }
 export const DataTable = ({
-  searchId,
   selectedIds,
   setSelectedIds,
-  selectedOrderType,
+  loading,
+  orders,
 }: DataTableProps) => {
   const columns: GridColDef[] = [
     {
@@ -46,10 +47,8 @@ export const DataTable = ({
     },
   ];
 
-  const { loading, orders } = useGetOrders({ searchId, selectedOrderType });
-
   return (
-    <DataGrid
+    <StyledDataGrid
       rows={orders}
       columns={columns}
       getRowId={(row) => row.orderId}
@@ -61,8 +60,6 @@ export const DataTable = ({
       rowSelectionModel={selectedIds}
       // GridRowSelectionModel is (string | number)[] but we know all of our ids are strings.
       onRowSelectionModelChange={(ids) => setSelectedIds(ids as string[])}
-      // TODO: Fix ref forwarding
-      // slots={{ baseCheckbox: (props) => <Checkbox {...props} color="error" /> }}
     />
   );
 };
@@ -73,4 +70,15 @@ const UNIVERSAL_COL_DEF: Partial<GridColDef> = {
   sortable: false,
   flex: 1,
   minWidth: 150,
+  renderCell: ({ value }) => (
+    <Typography variant="body2" fontWeight="500">
+      {value}
+    </Typography>
+  ),
 };
+
+const StyledDataGrid = styled(DataGrid)`
+  & .MuiCheckbox-root.Mui-checked svg {
+    color: #eb3644;
+  }
+`;

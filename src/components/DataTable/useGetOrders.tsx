@@ -46,5 +46,5 @@ export const useGetOrders = ({
     return orders.filter(({ orderId }) => orderId.includes(searchId));
   }, [orders, searchId]);
 
-  return { loading, orders: filteredOrders };
+  return { loading, orders: filteredOrders, handleFetchOrders };
 };
