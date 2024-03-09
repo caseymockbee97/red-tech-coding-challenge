@@ -6,6 +6,11 @@ export interface Order {
   createdByUserName: string;
 }
 
+export interface CreateOrder
+  extends Pick<Order, 'customerName' | 'createdByUserName'> {
+  orderType: '' | OrderType;
+}
+
 export type OrderType =
   | 'Standard'
   | 'SaleOrder'
