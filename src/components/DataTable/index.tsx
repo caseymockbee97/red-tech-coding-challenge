@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Order } from '../../Types';
+import { Edit } from '@mui/icons-material';
 
 interface DataTableProps {
   selectedIds: string[];
@@ -44,6 +45,21 @@ export const DataTable = ({
       field: 'createdByUserName',
       headerName: 'Created By',
     },
+    {
+      ...UNIVERSAL_COL_DEF,
+      field: 'buttons',
+      headerName: '',
+      minWidth: 24,
+      renderCell: () => {
+        return (
+          <ButtonContainer>
+            <IconButton>
+              <Edit fontSize="small" />
+            </IconButton>
+          </ButtonContainer>
+        );
+      },
+    },
   ];
 
   return (
@@ -80,5 +96,20 @@ const UNIVERSAL_COL_DEF: Partial<GridColDef> = {
 const StyledDataGrid = styled(DataGrid)`
   & .MuiCheckbox-root.Mui-checked svg {
     color: #eb3644;
+  }
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+`;
+
+// Hides the button icon if the cell isn't hovered
+const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  & svg {
+    display: none;
+  }
+  &:hover svg {
+    display: inherit;
   }
 `;
