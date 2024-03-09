@@ -34,7 +34,12 @@ export const OrdersToolbar = ({
           ),
         }}
       />
-      <Button variant="contained" size="small" href="/addOrder">
+      <Button
+        variant="contained"
+        size="small"
+        href="/addOrder"
+        sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}
+      >
         <Add fontSize="small" /> Create Order
       </Button>
       <Button
@@ -42,6 +47,7 @@ export const OrdersToolbar = ({
         size="small"
         disabled={!selectedIds.length}
         onClick={handleDeleteOrders}
+        sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}
       >
         <Delete fontSize="small" /> Delete Selected
       </Button>
@@ -59,6 +65,5 @@ const SearchField = styled(TextField)`
 
 const Toolbar = styled.div`
   display: flex;
-  flex-direction: row;
   gap: 12px;
 `;
